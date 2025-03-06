@@ -5,35 +5,22 @@
 #let color-darknight = rgb("#131A28")
 #let color-darkgray = rgb("#333333")
 #let color-gray = rgb("#5d5d5d")
-#let default-accent-color = rgb("#262F99")
+// #let default-accent-color = rgb("#262F99")
+#let default-accent-color = rgb("#7d207f")
 #let default-location-color = rgb("#333333")
 
 // const icons
-#let linkedin-icon = box(
-  fa-icon("linkedin", fill: color-darknight),
-)
-#let github-icon = box(
-  fa-icon("github", fill: color-darknight),
-)
-#let gitlab-icon = box(
-  fa-icon("gitlab", fill: color-darknight),
-)
-#let bitbucket-icon = box(
-  fa-icon("bitbucket", fill: color-darknight),
-)
-#let twitter-icon = box(
-  fa-icon("twitter", fill: color-darknight),
-)
-#let google-scholar-icon = box(
-  fa-icon("google-scholar", fill: color-darknight),
-)
-#let orcid-icon = box(
-  fa-icon("orcid", fill: color-darknight),
-)
-#let phone-icon = box(fa-icon("square-phone", fill: color-darknight))
+#let linkedin-icon = box(fa-icon("linkedin", fill: color-darknight))
+#let github-icon = box(fa-icon("github", fill: color-darknight))
+#let gitlab-icon = box(fa-icon("gitlab", fill: color-darknight))
+#let bitbucket-icon = box(fa-icon("bitbucket", fill: color-darknight))
+#let twitter-icon = box(fa-icon("twitter", fill: color-darknight))
+#let google-scholar-icon = box(fa-icon("google-scholar", fill: color-darknight))
+#let orcid-icon = box(fa-icon("orcid", fill: color-darknight))
+#let phone-icon = box(fa-icon("square-phone", fill: color-darkgray))
 #let email-icon = box(fa-icon("envelope", fill: color-darknight))
 #let birth-icon = box(fa-icon("cake", fill: color-darknight))
-#let homepage-icon = box(fa-icon("home", fill: color-darknight))
+#let homepage-icon = box(fa-icon("home", fill: color-darkgray))
 #let website-icon = box(fa-icon("globe", fill: color-darknight))
 
 /// Helpers
@@ -125,7 +112,7 @@
 /// -> none
 #let github-link(github-path) = {
   set box(height: 11pt)
-  
+
   align(right + horizon)[
     #fa-icon("github", fill: color-darkgray) #link(
       "https://github.com/" + github-path,
@@ -206,14 +193,14 @@
   show-footer: true,
   language: "en",
   font: ("Source Sans Pro", "Source Sans 3"),
-  header-font: ("Roboto"),
+  header-font: "Roboto",
   paper-size: "a4",
   body,
 ) = {
   if type(accent-color) == "string" {
     accent-color = rgb(accent-color)
   }
-  
+
   let lang_data = toml("lang.toml")
 
   show: body => context {
@@ -231,7 +218,7 @@
     fill: color-darkgray,
     fallback: true,
   )
-  
+
   set page(
     paper: paper-size,
     margin: (left: 15mm, right: 15mm, top: 10mm, bottom: 10mm),
@@ -243,18 +230,18 @@
       )] else [],
     footer-descent: 0pt,
   )
-  
+
   // set paragraph spacing
   set par(
     spacing: 0.75em,
     justify: true,
   )
-  
+
   set heading(
     numbering: none,
     outlined: false,
   )
-  
+
   show heading.where(level: 1): it => [
     #set text(
       size: 16pt,
@@ -270,7 +257,7 @@
     #text[#strong[#text(color)[#it.body]]]
     #box(width: 1fr, line(length: 100%))
   ]
-  
+
   show heading.where(level: 2): it => {
     set text(
       color-darkgray,
@@ -280,7 +267,7 @@
     )
     it.body
   }
-  
+
   show heading.where(level: 3): it => {
     set text(
       size: 10pt,
@@ -288,7 +275,7 @@
     )
     smallcaps[#it.body]
   }
-  
+
   let name = {
     align(center)[
       #pad(bottom: 5pt)[
@@ -311,22 +298,20 @@
       ]
     ]
   }
-  
+
   let positions = {
     set text(
       accent-color,
-      size: 9pt,
+      size: 8pt,
       weight: "regular",
     )
     align(center)[
       #smallcaps[
-        #author.positions.join(
-          text[#"  "#sym.dot.c#"  "],
-        )
+        #author.positions.join(text[#"  "#sym.dot.c#"  "])
       ]
     ]
   }
-  
+
   let address = {
     set text(
       size: 9pt,
@@ -338,12 +323,12 @@
       ]
     ]
   }
-  
+
   let contacts = {
     set box(height: 9pt)
-    
+
     let separator = box(width: 5pt)
-    
+
     align(center)[
       #set text(
         size: 9pt,
@@ -384,25 +369,33 @@
           #if ("bitbucket" in author) [
             #separator
             #bitbucket-icon
-            #box[#link("https://bitbucket.org/" + author.bitbucket)[#author.bitbucket]]
+            #box[#link(
+                "https://bitbucket.org/" + author.bitbucket,
+              )[#author.bitbucket]]
           ]
           #if ("linkedin" in author) [
             #separator
             #linkedin-icon
             #box[
-              #link("https://www.linkedin.com/in/" + author.linkedin)[#author.firstname #author.lastname]
+              #link(
+                "https://www.linkedin.com/in/" + author.linkedin,
+              )[#author.firstname #author.lastname]
             ]
           ]
           #if ("twitter" in author) [
             #separator
             #twitter-icon
-            #box[#link("https://twitter.com/" + author.twitter)[\@#author.twitter]]
+            #box[#link(
+                "https://twitter.com/" + author.twitter,
+              )[\@#author.twitter]]
           ]
           #if ("scholar" in author) [
             #let fullname = str(author.firstname + " " + author.lastname)
             #separator
             #google-scholar-icon
-            #box[#link("https://scholar.google.com/citations?user=" + author.scholar)[#fullname]]
+            #box[#link(
+                "https://scholar.google.com/citations?user=" + author.scholar,
+              )[#fullname]]
           ]
           #if ("orcid" in author) [
             #separator
@@ -418,11 +411,11 @@
       ]
     ]
   }
-  
+
   if profile-picture != none {
     grid(
       columns: (100% - 4cm, 4cm),
-      rows: (100pt),
+      rows: 100pt,
       gutter: 10pt,
       [
         #name
@@ -449,7 +442,6 @@
   }
 
   body
-
 }
 
 /// The base item for resume entries.
@@ -532,7 +524,7 @@
 #let resume-skill-item(category, items) = {
   set block(below: 0.65em)
   set pad(top: 2pt)
-  
+
   pad[
     #grid(
       columns: (20fr, 80fr),
@@ -559,7 +551,8 @@
 
 #let default-closing(lang_data) = {
   align(bottom)[
-    #text(weight: "light", style: "italic")[ #linguify(
+    #text(weight: "light", style: "italic")[
+      #linguify(
         "attached",
         from: lang_data,
       )#sym.colon #linguify("curriculum-vitae", from: lang_data)]
@@ -592,10 +585,10 @@
   if type(accent-color) == "string" {
     accent-color = rgb(accent-color)
   }
-  
+
   // language data
   let lang_data = toml("lang.toml")
-  
+
   if closing == none {
     closing = default-closing(lang_data)
   }
@@ -603,7 +596,9 @@
   show: body => context {
     set document(
       author: author.firstname + " " + author.lastname,
-      title: lflib._linguify("cover-letter", lang: language, from: lang_data).ok,
+      title: lflib
+        ._linguify("cover-letter", lang: language, from: lang_data)
+        .ok,
     )
     body
   }
@@ -615,7 +610,7 @@
     fill: color-darkgray,
     fallback: true,
   )
-  
+
   set page(
     paper: paper-size,
     margin: (left: 15mm, right: 15mm, top: 10mm, bottom: 10mm),
@@ -627,18 +622,18 @@
       )] else [],
     footer-descent: 0pt,
   )
-  
+
   // set paragraph spacing
   set par(
     spacing: 0.75em,
     justify: true,
   )
-  
+
   set heading(
     numbering: none,
     outlined: false,
   )
-  
+
   show heading: it => [
     #set block(
       above: 1em,
@@ -648,13 +643,13 @@
       size: 16pt,
       weight: "regular",
     )
-    
+
     #align(left)[
       #text[#strong[#text(accent-color)[#it.body]]]
       #box(width: 1fr, line(length: 100%))
     ]
   ]
-  
+
   let name = {
     align(right)[
       #pad(bottom: 5pt)[
@@ -662,7 +657,7 @@
           #set text(
             size: 32pt,
             style: "normal",
-            font: ("Roboto"),
+            font: "Roboto",
           )
           #if language == "zh" or language == "ja" [
             #text(
@@ -673,12 +668,12 @@
             #text(accent-color, weight: "thin")[#author.firstname]
             #text(weight: "bold")[#author.lastname]
           ]
-          
+
         ]
       ]
     ]
   }
-  
+
   let positions = {
     set text(
       accent-color,
@@ -687,13 +682,11 @@
     )
     align(right)[
       #smallcaps[
-        #author.positions.join(
-          text[#"  "#sym.dot.c#"  "],
-        )
+        #author.positions.join(text[#"  "#sym.dot.c#"  "])
       ]
     ]
   }
-  
+
   let address = {
     set text(
       size: 9pt,
@@ -706,11 +699,11 @@
       ]
     ]
   }
-  
+
   let contacts = {
     set box(height: 9pt)
-    
-    let separator = [  #box(sym.bar.v)  ]
+
+    let separator = [ #box(sym.bar.v) ]
     let author_list = ()
 
     if ("phone" in author) {
@@ -735,7 +728,9 @@
       author_list.push[
         #linkedin-icon
         #box[
-          #link("https://www.linkedin.com/in/" + author.linkedin)[#author.firstname #author.lastname]
+          #link(
+            "https://www.linkedin.com/in/" + author.linkedin,
+          )[#author.firstname #author.lastname]
         ]
       ]
     }
@@ -762,11 +757,11 @@
       #author_list.join(separator)
     ]
   }
-  
+
   let letter-heading = {
     grid(
       columns: (1fr, 2fr),
-      rows: (100pt),
+      rows: 100pt,
       align(left + horizon)[
         #block(
           clip: true,
@@ -785,7 +780,7 @@
       ],
     )
   }
-  
+
   let signature = {
     align(bottom)[
       #pad(bottom: 2em)[
@@ -797,7 +792,7 @@
       ]
     ]
   }
-  
+
   // actual content
   letter-heading
   body
@@ -820,7 +815,7 @@
     ][
       #text(weight: "light", style: "italic", size: 9pt)[#date]
     ]
-    
+
     #pad(top: 0.65em, bottom: 0.65em)[
       #text(weight: "regular", fill: color-gray, size: 9pt)[
         #smallcaps[#entity-info.name] \
@@ -837,10 +832,13 @@
 /// - dear (string): optional field for redefining the "dear" variable
 #let letter-heading(job-position: "", addressee: "", dear: "") = {
   let lang_data = toml("lang.toml")
-  
+
   // TODO: Make this adaptable to content
   underline(evade: false, stroke: 0.5pt, offset: 0.3em)[
-    #text(weight: "bold", size: 12pt)[#linguify("letter-position-pretext", from: lang_data) #job-position]
+    #text(weight: "bold", size: 12pt)[#linguify(
+        "letter-position-pretext",
+        from: lang_data,
+      ) #job-position]
   ]
   pad(top: 1em, bottom: 1em)[
     #text(weight: "light", fill: color-gray)[
